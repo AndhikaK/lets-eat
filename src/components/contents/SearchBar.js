@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import "../../assets/styles/search-bar.css";
 import { FoodContext } from "../../layouts/Contents";
 
@@ -39,6 +40,7 @@ function SearchBar() {
           Menampilkan hasil pencarian <b>{foodContext.foodState.searchInput}</b>
         </div>
       )}
+      <Link to="/food">Food</Link>
     </div>
   );
 }

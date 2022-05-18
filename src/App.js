@@ -8,6 +8,7 @@ import axios from "axios";
 
 export const InputContext = createContext();
 export const RecipeContext = createContext();
+export const LikedContext = createContext();
 
 const initialInput = "";
 const inputReducer = (state, action) => {
@@ -39,18 +40,36 @@ const recipeReducer = (state, action) => {
   }
 };
 
+const initialLiked = [];
+const likeReducer = (state, action) => {
+  switch (action.type) {
+    case "add_liked":
+      return [...state, action.payload];
+
+    case "remove_liked":
+      return state.filter((el) => {
+        return el.uri !== action.payload.uri;
+      });
+    default:
+      return state;
+  }
+};
+
 function App() {
   const [input, dispatchInput] = useReducer(inputReducer, initialInput);
   const [recipes, dispatchRecipe] = useReducer(recipeReducer, initialRecipe);
+  const [liked, dispatchLiked] = useReducer(likeReducer, initialLiked);
 
   return (
     <InputContext.Provider value={{ inputState: input, inputDispatch: dispatchInput }}>
       <RecipeContext.Provider value={{ recipeState: recipes, recipeDispatch: dispatchRecipe }}>
-        <div className=" grid grid-rows-[auto_1fr_auto]">
-          <Header />
-          <Contents />
-          <Footer />
-        </div>
+        <LikedContext.Provider value={{ likedState: liked, likedDispatch: dispatchLiked }}>
+          <div className=" grid grid-rows-[auto_1fr_auto]">
+            <Header />
+            <Contents />
+            <Footer />
+          </div>
+        </LikedContext.Provider>
       </RecipeContext.Provider>
     </InputContext.Provider>
   );

@@ -1,22 +1,30 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { InputContext, LikedContext, RecipeContext } from "../App";
 
 function SearchBar() {
   const inputContext = useContext(InputContext);
   const recipeContext = useContext(RecipeContext);
   const likedContext = useContext(LikedContext);
+  const navigate = useNavigate();
+
+  const [mealType, setmealType] = useState("Breakfast");
 
   const getRecipe = () => {
-    const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${inputContext.inputState}&app_id=4df57a1f&app_key=556178a57a9e1358a4bdc2c17543be74`;
+    alert(mealType);
+    const url = `https://api.edamam.com/api/recipes/v2?type=public&q=${inputContext.inputState}&app_id=4df57a1f&app_key=556178a57a9e1358a4bdc2c17543be74&mealType=${mealType}`;
     axios
       .get(url)
       .then((response) => {
-        console.log(response.data);
         recipeContext.recipeDispatch({ type: "FETCH_SUCCESS", payload: response.data });
       })
       .catch((error) => {});
+    // navigate back to root
+    navigate("/");
   };
+
+  const mealTypes = ["Breakfast", "Dinner", "Lunch", "Snack", "Teatime"];
 
   return (
     <div className="z-10  sticky top-0 p-5 px-1 pt-7 border-b border-b-slate-200 bg-white">
@@ -32,7 +40,19 @@ function SearchBar() {
           <i className="bx bx-search-alt-2 text-slate-200 text-xl"></i>
         </button>
       </div>
-      <div className="pt-3 flex">
+      <div className="pt-3 flex gap-4">
+        <select
+          onChange={(e) => setmealType(e.target.value)}
+          className="border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-600 outline-none"
+        >
+          {mealTypes.map((item) => {
+            return (
+              <option value={item} key={item}>
+                {item}
+              </option>
+            );
+          })}
+        </select>
         <button className="relative" type="button" data-modal-toggle="defaultModal">
           <div className="absolute h-4 w-4 text-center rounded-full bg-sky-600 text-white -top-1 -right-1 text-xs">
             {likedContext.likedState.length}

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { LikedContext } from "../App";
-import background from "../img/food-banner.jpeg";
 
 function Recipe(props) {
   const likedContext = useContext(LikedContext);
@@ -20,8 +20,11 @@ function Recipe(props) {
     <div className="relative rounded-lg shadow-lg overflow-clip">
       <img src={props.data.image} alt="" className="h-52" />
       <div className="p-3 ">
-        <div className="font-bold line-clamp-2">{props.data.label}</div>
+        <Link to="/recipe" state={{ data: props.data }}>
+          <div className="font-bold line-clamp-2 hover:underline">{props.data.label}</div>
+        </Link>
         <div className="capitalize">{props.data.cuisineType}</div>
+        <div className="text-sm text-slate-400 capitalize">{props.data.mealType}</div>
       </div>
       {!isLiked ? (
         <div

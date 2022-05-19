@@ -5,6 +5,7 @@ import Contents from "./components/Contents";
 import Footer from "./components/Footer";
 import { createContext, useReducer } from "react";
 import axios from "axios";
+import LikedModal from "./components/LikedModal";
 
 export const InputContext = createContext();
 export const RecipeContext = createContext();
@@ -68,6 +69,7 @@ function App() {
             <Header />
             <Contents />
             <Footer />
+            <LikedModal />
           </div>
         </LikedContext.Provider>
       </RecipeContext.Provider>
